@@ -106,7 +106,9 @@ terraform apply
 
 - **Always** provide architecture documentation with Mermaid diagrams where possible
 - **Document every process and design** — security, observability, monitoring, data flow, API design, scalability, disaster recovery, and all operational concerns
-- Architecture docs live in `docs/` — see `docs/architecture.md` for the full system design
+- Architecture docs live in `docs/`:
+  - `docs/architecture.md` — full system design (pipeline, data layer, security, monitoring, etc.)
+  - `docs/claims-evidence-linking.md` — how claims link to evidence documents with verifiable chains
 - Update documentation when architecture changes
 
 ## Code Standards
