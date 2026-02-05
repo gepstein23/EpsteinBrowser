@@ -65,6 +65,7 @@ terraform apply          # deploy infrastructure
 - All work happens on the **`develop`** branch — always name the working branch `develop`
 - Amplify builds automatically on push to `develop` (preview/staging)
 - PRs are raised from `develop` against `main`; merge after PM approval
+- All commit messages must begin with `Authored by Genevieve's Intern, Claude: `
 - Every change must build and pass tests before PR
 - Frontend and backend changes in the same logical task go in the same PR
 - Amplify deploys frontend automatically from `frontend/` on merge to `main`
