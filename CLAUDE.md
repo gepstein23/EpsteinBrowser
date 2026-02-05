@@ -6,6 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 EpsteinBrowser is a web application that scrapes, processes, and indexes the Epstein files from government FOIA releases, then provides a beautiful, queryable UI for exploring the data. Priorities: **scalability, performance, data accuracy**.
 
+### Primary Data Source
+
+DOJ Epstein Library: `justice.gov/epstein` (~3.5M pages across 12 data sets). The system includes a **release scanner** that checks every 15 minutes for new data set publications and alerts via SNS.
+
+### Current Phase
+
+**Phase 1** — Document ingestion, text extraction, full-text search, browsing UI, new release detection. See `docs/project-plan.md`.
+
 ## Architecture
 
 ```
@@ -109,6 +117,7 @@ terraform apply
 - Architecture docs live in `docs/`:
   - `docs/architecture.md` — full system design (pipeline, data layer, security, monitoring, etc.)
   - `docs/claims-evidence-linking.md` — how claims link to evidence documents with verifiable chains
+  - `docs/project-plan.md` — phased project plan (Phase 1: ingestion, browsing, release detection)
 - Update documentation when architecture changes
 
 ## Code Standards
