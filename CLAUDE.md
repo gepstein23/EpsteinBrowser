@@ -62,10 +62,13 @@ terraform apply          # deploy infrastructure
 
 ## Workflow
 
-- All work happens on **feature branches**, PRs raised against `main`
+- All work happens on the **`develop`** branch — always name the working branch `develop`
+- Amplify builds automatically on push to `develop` (preview/staging)
+- PRs are raised from `develop` against `main`; merge after PM approval
 - Every change must build and pass tests before PR
 - Frontend and backend changes in the same logical task go in the same PR
 - Amplify deploys frontend automatically from `frontend/` on merge to `main`
+- Whenever the PM provides new context or instructions, update this CLAUDE.md accordingly
 
 ## Code Standards
 
