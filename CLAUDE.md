@@ -12,6 +12,7 @@ EpsteinBrowser is a web application that scrapes, processes, and indexes the Eps
 frontend/          → React + Vite + TypeScript (deployed via AWS Amplify)
 backend/           → Java 21 + Spring Boot (deployed on ECS Fargate)
 infrastructure/    → Terraform IaC for all AWS resources (dev + staging environments)
+docs/              → Architecture documentation, diagrams, design docs
 ```
 
 ### Data Flow
@@ -89,6 +90,13 @@ terraform apply
 - Frontend and backend changes in the same logical task go in the same PR
 - Amplify deploys frontend automatically from `frontend/` on merge to `main`
 - **Be very diligent**: whenever the PM provides new context or instructions, always update this CLAUDE.md immediately
+
+## Documentation Standards
+
+- **Always** provide architecture documentation with Mermaid diagrams where possible
+- **Document every process and design** — security, observability, monitoring, data flow, API design, scalability, disaster recovery, and all operational concerns
+- Architecture docs live in `docs/` — see `docs/architecture.md` for the full system design
+- Update documentation when architecture changes
 
 ## Code Standards
 
