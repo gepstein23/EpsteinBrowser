@@ -15,23 +15,34 @@ infrastructure/    → Terraform IaC for all AWS resources (dev + staging enviro
 docs/              → Architecture documentation, diagrams, design docs
 ```
 
-### Data Flow
+### Evented Document Pipeline
 
-1. **Scraper** (Spring Boot batch job on Fargate) pulls documents from government source → stores raw files in **S3**
-2. **Processor** parses/extracts structured data → indexes into **Amazon OpenSearch**
-3. **API** (Spring Boot REST on Fargate) serves queries from OpenSearch → frontend
-4. **Frontend** displays stats dashboards and exposes full-text search/querying
+S3 is the source of truth. Processing is orchestrated by Step Functions as a multi-stage pipeline.
+
+1. **Ingestion Service** (Fargate) scrapes government source → stores raw files in S3 `raw/` → registers in Aurora
+2. **S3 trigger** kicks off Step Functions state machine
+3. **Extract Text Worker** (Fargate) → OCR/text extraction → S3 `text/`
+4. **NER Worker** (Fargate) → entity extraction + canonicalization → Aurora entities + OpenSearch `mentions`
+5. **Claims Worker** (Fargate) → claim extraction + scoring (Bedrock for LLM enrichment) → OpenSearch `claims` + Aurora
+6. **Query API** (Fargate) serves search, aggregations, entity/claim queries → frontend
+7. **Frontend** displays stats dashboards, entity rankings, claims explorer, full-text search
 
 ### AWS Services
 
 | Service | Purpose |
 |---------|---------|
-| S3 | Raw document storage (PDFs, images) |
-| OpenSearch | Full-text search index, aggregations for stats |
-| ECS Fargate | Hosts API and scraper/processor containers |
+| S3 | Source of truth: `raw/`, `text/`, `derived/` prefixes |
+| OpenSearch | Search index: `documents`, `mentions`, `claims` indices |
+| Aurora PostgreSQL | Structured metadata: doc registry, entities, claims review, lineage |
+| ECS Fargate | API, ingestion service, and pipeline workers |
+| Step Functions | Pipeline orchestration (retryable, observable) |
+| SQS | Backpressure queues between pipeline stages + DLQs |
+| Lambda | Lightweight glue (triggers, status updates, fan-out) |
+| Bedrock | Offline LLM enrichment (claim extraction, classification) |
+| Cognito | API authentication (user pool + authorizer) |
 | Amplify | Frontend hosting, CI/CD from `frontend/` |
 | ECR | Docker image registry for backend |
-| VPC | Network isolation for Fargate + OpenSearch |
+| VPC | Network isolation for all compute + data stores |
 
 ## Build & Run Commands
 
