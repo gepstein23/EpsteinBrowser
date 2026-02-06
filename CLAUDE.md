@@ -20,15 +20,15 @@ DOJ Epstein Library: `justice.gov/epstein` (~3.5M pages across 12 data sets). Th
 
 Completed:
 - M1.1 done: Frontend fully scaffolded. `frontend/` has React + Vite + TypeScript with TailwindCSS, Vitest, testing-library, ESLint, React Router, React Query, Axios. Layout shell with nav bar, stub pages, Axios API client, Vitest test setup, smoke tests (4 passing). `amplify.yml` at repo root. Build, test, lint all pass. Merged to main.
-- M1.2 done: Backend scaffolded as multi-module Gradle project (Java 21 + Spring Boot 3.4.1). Modules: `common` (shared models — `ProcessingState` enum), `api` (Spring Boot web app with `/api/v1/health` endpoint + tests), `ingestion` (Spring Boot web app), `workers` (Spring Boot app). Dependency management via Spring BOM. Gradle wrapper (8.11.1). All modules build and tests pass (`./gradlew build`).
+- M1.2 done: Backend scaffolded as multi-module Gradle project (Java 21 + Spring Boot 3.4.1). Modules: `common`, `api`, `ingestion`, `workers`. Gradle wrapper (8.11.1). All modules build and tests pass. Merged to main.
+- M1.3 done: Infrastructure scaffolded with Terraform. 11 module stubs (vpc, s3, aurora, opensearch, ecs, alb, step-functions, sqs, ecr, monitoring, iam) each with `variables.tf`, `main.tf`, `outputs.tf`. Two environments (`dev`, `staging`) with S3 backend config, AWS provider with default tags, variables with environment-specific prefixes (`epstein-dev-`, `epstein-staging-`), and commented-out module wiring in `main.tf`. Both environments pass `terraform init` and `terraform validate`.
 
 Not started:
-- M1.3: Infrastructure (Terraform modules)
 - M1.4: CI (GitHub Actions + Amplify)
 
 After M1, proceed to M2–M8 per `docs/project-plan.md`.
 
-Git state: on `develop` branch. M1.1 merged to main. Uncommitted M1.2 work in `backend/`.
+Git state: on `develop` branch. M1.1 + M1.2 merged to main.
 
 ## Architecture
 
