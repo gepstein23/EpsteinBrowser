@@ -14,22 +14,12 @@ DOJ Epstein Library: `justice.gov/epstein` (~3.5M pages across 12 data sets). Th
 
 **Phase 1** — Document ingestion, text extraction, full-text search, browsing UI, new release detection. See `docs/project-plan.md`.
 
-### Resume Point (last updated: 2026-02-05)
+### Resume Point (last updated: 2026-02-06)
 
 **Milestone M1: Project Scaffolding — IN PROGRESS**
 
 Completed:
-- M1.1 partially done: `frontend/` scaffolded with React + Vite + TypeScript. Packages installed (TailwindCSS, Vitest, testing-library, ESLint, React Router, React Query, Axios). `vite.config.ts` configured with Tailwind + Vitest. `package.json` has test script. `index.html` updated. `main.tsx` wired with BrowserRouter + QueryClientProvider. `App.tsx` has route structure (Home, Search, Document, Datasets). `index.css` set to Tailwind import. `App.css` is still Vite boilerplate (delete it).
-
-Still needed for M1.1:
-- Create `src/components/Layout.tsx` (shell with nav bar)
-- Create `src/pages/HomePage.tsx`, `SearchPage.tsx`, `DocumentPage.tsx`, `DatasetsPage.tsx` (stub pages)
-- Create `src/api/client.ts` (Axios instance)
-- Create `src/test/setup.ts` (Vitest setup with testing-library)
-- Create `src/App.test.tsx` (smoke test)
-- Delete `src/App.css` and `src/assets/react.svg`
-- Create `amplify.yml` in repo root
-- Verify: `npm run build`, `npm run test`, `npm run lint` all pass
+- M1.1 done: Frontend fully scaffolded. `frontend/` has React + Vite + TypeScript with TailwindCSS, Vitest, testing-library, ESLint, React Router, React Query, Axios. Layout shell with nav bar (`src/components/Layout.tsx`), stub pages (`src/pages/HomePage.tsx`, `SearchPage.tsx`, `DocumentPage.tsx`, `DatasetsPage.tsx`), Axios API client (`src/api/client.ts`), Vitest test setup (`src/test/setup.ts`), smoke tests (`src/App.test.tsx`, 4 passing). Vite boilerplate deleted. `amplify.yml` created at repo root. Build, test, and lint all pass.
 
 Not started:
 - M1.2: Backend (Spring Boot multi-module Gradle project)
@@ -38,7 +28,7 @@ Not started:
 
 After M1, proceed to M2–M8 per `docs/project-plan.md`.
 
-Git state: on `develop` branch, uncommitted work in `frontend/`. PRs #1 and #2 merged to main.
+Git state: on `develop` branch, uncommitted work in `frontend/` and `amplify.yml`. PRs #1 and #2 merged to main.
 
 ## Architecture
 
