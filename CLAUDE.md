@@ -14,6 +14,22 @@ DOJ Epstein Library: `justice.gov/epstein` (~3.5M pages across 12 data sets). Th
 
 **Phase 1** — Document ingestion, text extraction, full-text search, browsing UI, new release detection. See `docs/project-plan.md`.
 
+### Resume Point (last updated: 2026-02-06)
+
+**Milestone M1: Project Scaffolding — IN PROGRESS**
+
+Completed:
+- M1.1 done: Frontend fully scaffolded. `frontend/` has React + Vite + TypeScript with TailwindCSS, Vitest, testing-library, ESLint, React Router, React Query, Axios. Layout shell with nav bar (`src/components/Layout.tsx`), stub pages (`src/pages/HomePage.tsx`, `SearchPage.tsx`, `DocumentPage.tsx`, `DatasetsPage.tsx`), Axios API client (`src/api/client.ts`), Vitest test setup (`src/test/setup.ts`), smoke tests (`src/App.test.tsx`, 4 passing). Vite boilerplate deleted. `amplify.yml` created at repo root. Build, test, and lint all pass.
+
+Not started:
+- M1.2: Backend (Spring Boot multi-module Gradle project)
+- M1.3: Infrastructure (Terraform modules)
+- M1.4: CI (GitHub Actions + Amplify)
+
+After M1, proceed to M2–M8 per `docs/project-plan.md`.
+
+Git state: on `develop` branch, uncommitted work in `frontend/` and `amplify.yml`. PRs #1 and #2 merged to main.
+
 ## Architecture
 
 ```
