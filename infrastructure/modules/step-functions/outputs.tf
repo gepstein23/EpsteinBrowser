@@ -1,1 +1,9 @@
-# Outputs will include: state_machine_arn, state_machine_name
+output "state_machine_arn" {
+  description = "State machine ARN"
+  value       = aws_sfn_state_machine.document_pipeline.arn
+}
+
+output "state_machine_name" {
+  description = "State machine name"
+  value       = aws_sfn_state_machine.document_pipeline.name
+}

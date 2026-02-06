@@ -7,17 +7,29 @@ variable "aws_region" {
 variable "environment" {
   description = "Environment name"
   type        = string
-  default     = "staging"
+  default     = "prod"
 }
 
 variable "prefix" {
   description = "Resource name prefix"
   type        = string
-  default     = "epstein-staging"
+  default     = "epstein-prod"
 }
 
 variable "availability_zones" {
   description = "Availability zones"
   type        = list(string)
   default     = ["us-east-1a", "us-east-1b"]
+}
+
+variable "aurora_master_password" {
+  description = "Aurora master password"
+  type        = string
+  sensitive   = true
+}
+
+variable "alert_email" {
+  description = "Email for alarm notifications"
+  type        = string
+  default     = ""
 }

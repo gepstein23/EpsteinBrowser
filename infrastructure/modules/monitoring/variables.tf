@@ -13,3 +13,8 @@ variable "alert_email" {
   type        = string
   default     = ""
 }
+
+variable "dlq_name" {
+  description = "Name of the dead letter queue for alarm monitoring"
+  type        = string
+}
