@@ -28,9 +28,26 @@ Completed:
 
 All 11 Terraform modules implemented: VPC (public/private/isolated subnets, NAT, 2 AZs), S3 (versioning, encryption, lifecycle), Aurora PostgreSQL (Serverless v2, scales to zero in dev), OpenSearch (single-node dev, multi-node prod), ECS Fargate (cluster + task defs for api/ingestion/workers + api service behind ALB), ALB (HTTP listener, health checks), Step Functions (document pipeline with retry/catch), SQS (extract-text queue + DLQ), ECR (repos with lifecycle policies), monitoring (CloudWatch log groups, SNS alerts, DLQ alarm), IAM (least-privilege roles for each service + Step Functions). Dev and prod environments fully wired. Both pass `terraform validate`.
 
-**Next: Milestone M3 — Ingestion**
+**Milestone M3: Ingestion Service — COMPLETE**
 
-Git state: on `develop` branch. M2 uncommitted in `infrastructure/`.
+Full DOJ document ingestion service implemented in `backend/ingestion/`:
+- 4 scrapers: DojDisclosureScraper (paginated HTML scraping), ZipDownloadScraper (ZIP archive extraction), CourtRecordsScraper (docket enumeration), FoiaScraper (CBP FOIA records)
+- Rate-limited HTTP client with Bucket4j token bucket (5 req/s default), exponential backoff with jitter, per-host throttling, circuit breaker (10 failures → 5min cooldown)
+- Deduplication via SHA-256 hash check against Aurora `documents.file_hash`
+- S3 upload service → `raw/{data_set}/{filename}.pdf`
+- Document registration with full audit trail (ingestion_events table)
+- Ingestion orchestrator coordinating all scrapers with async execution
+- REST API: POST /start, GET /runs, /runs/{id}, /runs/{id}/events, /status, /health
+- Micrometer metrics: 12 metrics (counters, gauges, timers) tagged by data_set and source_type
+- Structured JSON logging via Logstash encoder with MDC (runId, dataSet, sourceUrl)
+- Flyway migrations V1-V3 for documents, ingestion_runs, ingestion_events tables
+- JPA entities + Spring Data repositories in common module
+- 72 unit tests across all components, all passing
+- Deployable bootJar: ingestion-0.0.1-SNAPSHOT.jar (71MB)
+
+**Next: Milestone M4 — Text Extraction**
+
+Git state: on `develop` branch. M3 uncommitted in `backend/`.
 
 ## Architecture
 

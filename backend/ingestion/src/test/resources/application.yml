@@ -1,0 +1,43 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: epstein-ingestion-test
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+  flyway:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+ingestion:
+  rate-limit:
+    requests-per-second: 100
+    polite-delay-ms: 0
+    backoff-initial-ms: 1
+    backoff-max-ms: 10
+  concurrency:
+    max-downloads: 2
+  circuit-breaker:
+    failure-threshold: 10
+    cooldown-ms: 1000
+  s3:
+    bucket: test-bucket
+    raw-prefix: raw
+  sources:
+    doj-disclosures-base-url: https://www.justice.gov/epstein/doj-disclosures
+    court-records-base-url: https://www.justice.gov/epstein/court-records
+    foia-base-url: https://www.justice.gov/epstein/foia

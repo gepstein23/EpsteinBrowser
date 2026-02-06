@@ -4,7 +4,44 @@ server:
 spring:
   application:
     name: epstein-ingestion
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/epstein
+    username: epstein
+    password: ${DB_PASSWORD:epstein_dev}
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    tags:
+      application: epstein-ingestion
+
+ingestion:
+  rate-limit:
+    requests-per-second: 5
+    polite-delay-ms: 200
+    backoff-initial-ms: 2000
+    backoff-max-ms: 120000
+  concurrency:
+    max-downloads: 3
+  circuit-breaker:
+    failure-threshold: 10
+    cooldown-ms: 300000
+  s3:
+    bucket: ${S3_BUCKET:epstein-dev-documents}
+    raw-prefix: raw
+  sources:
+    doj-disclosures-base-url: https://www.justice.gov/epstein/doj-disclosures
+    court-records-base-url: https://www.justice.gov/epstein/court-records
+    foia-base-url: https://www.justice.gov/epstein/foia
