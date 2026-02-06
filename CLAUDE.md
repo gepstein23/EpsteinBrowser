@@ -21,19 +21,23 @@ DOJ Epstein Library: `justice.gov/epstein` (~3.5M pages across 12 data sets). Th
 Completed:
 - M1.1 done: Frontend scaffolded (React + Vite + TypeScript + TailwindCSS). Layout, stub pages, API client, tests, `amplify.yml`.
 - M1.2 done: Backend scaffolded (Java 21 + Spring Boot 3.4.1, multi-module Gradle). Modules: `common`, `api`, `ingestion`, `workers`.
-- M1.3 done: Infrastructure scaffolded (Terraform). 11 module stubs, dev + staging environments.
-- M1.4 done: CI via GitHub Actions — 3 workflows: `backend.yml` (Gradle build/test on Java 21), `frontend.yml` (npm lint/test/build on Node 20), `terraform.yml` (init + validate + fmt check for dev/staging matrix). All trigger on push to `develop` and PRs to `main`, path-filtered to their respective directories. Amplify handles frontend deployment via `amplify.yml` on merge to `main`.
+- M1.3 done: Infrastructure scaffolded (Terraform). 11 module stubs, dev + prod environments.
+- M1.4 done: CI via GitHub Actions — 3 workflows for backend, frontend, terraform. Path-filtered, dev/prod matrix.
 
-**Next: Milestone M2 — Infrastructure (Terraform `apply` creates all resources in dev)**
+**Milestone M2: Infrastructure — COMPLETE**
 
-Git state: on `develop` branch. All M1 merged to main.
+All 11 Terraform modules implemented: VPC (public/private/isolated subnets, NAT, 2 AZs), S3 (versioning, encryption, lifecycle), Aurora PostgreSQL (Serverless v2, scales to zero in dev), OpenSearch (single-node dev, multi-node prod), ECS Fargate (cluster + task defs for api/ingestion/workers + api service behind ALB), ALB (HTTP listener, health checks), Step Functions (document pipeline with retry/catch), SQS (extract-text queue + DLQ), ECR (repos with lifecycle policies), monitoring (CloudWatch log groups, SNS alerts, DLQ alarm), IAM (least-privilege roles for each service + Step Functions). Dev and prod environments fully wired. Both pass `terraform validate`.
+
+**Next: Milestone M3 — Ingestion**
+
+Git state: on `develop` branch. M2 uncommitted in `infrastructure/`.
 
 ## Architecture
 
 ```
 frontend/          → React + Vite + TypeScript (deployed via AWS Amplify)
 backend/           → Java 21 + Spring Boot (deployed on ECS Fargate)
-infrastructure/    → Terraform IaC for all AWS resources (dev + staging environments)
+infrastructure/    → Terraform IaC for all AWS resources (dev + prod environments)
 docs/              → Architecture documentation, diagrams, design docs
 ```
 
@@ -89,14 +93,14 @@ npm run lint             # lint check
 
 ### Infrastructure (`infrastructure/`)
 
-Two environments: **dev** and **staging**, each with its own Terraform workspace and resource prefix.
+Two environments: **dev** and **prod**, each with its own Terraform workspace and resource prefix.
 
 ```
 infrastructure/
   modules/           → Shared Terraform modules
   environments/
     dev/             → Dev environment config (prefix: epstein-dev-)
-    staging/         → Staging environment config (prefix: epstein-staging-)
+    prod/            → Prod environment config (prefix: epstein-prod-)
 ```
 
 ```bash
@@ -106,8 +110,8 @@ terraform init
 terraform plan
 terraform apply
 
-# Apply to staging
-cd infrastructure/environments/staging
+# Apply to prod
+cd infrastructure/environments/prod
 terraform init
 terraform plan
 terraform apply
@@ -138,5 +142,5 @@ terraform apply
 
 - Frontend: TypeScript strict mode, Vitest for testing, component tests for all UI
 - Backend: Java 21, Spring Boot conventions, JUnit 5 + Mockito for testing, all services have unit tests
-- Infrastructure: Terraform modules per resource group, environment-specific configs in `environments/dev/` and `environments/staging/`, all resources prefixed by environment (`epstein-dev-`, `epstein-staging-`)
+- Infrastructure: Terraform modules per resource group, environment-specific configs in `environments/dev/` and `environments/prod/`, all resources prefixed by environment (`epstein-dev-`, `epstein-prod-`)
 - All code must be fully unit tested before commit

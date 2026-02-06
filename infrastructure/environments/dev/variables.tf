@@ -21,3 +21,15 @@ variable "availability_zones" {
   type        = list(string)
   default     = ["us-east-1a", "us-east-1b"]
 }
+
+variable "aurora_master_password" {
+  description = "Aurora master password"
+  type        = string
+  sensitive   = true
+}
+
+variable "alert_email" {
+  description = "Email for alarm notifications"
+  type        = string
+  default     = ""
+}
