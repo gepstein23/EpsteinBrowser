@@ -16,19 +16,17 @@ DOJ Epstein Library: `justice.gov/epstein` (~3.5M pages across 12 data sets). Th
 
 ### Resume Point (last updated: 2026-02-06)
 
-**Milestone M1: Project Scaffolding — IN PROGRESS**
+**Milestone M1: Project Scaffolding — COMPLETE**
 
 Completed:
-- M1.1 done: Frontend fully scaffolded. `frontend/` has React + Vite + TypeScript with TailwindCSS, Vitest, testing-library, ESLint, React Router, React Query, Axios. Layout shell with nav bar, stub pages, Axios API client, Vitest test setup, smoke tests (4 passing). `amplify.yml` at repo root. Build, test, lint all pass. Merged to main.
-- M1.2 done: Backend scaffolded as multi-module Gradle project (Java 21 + Spring Boot 3.4.1). Modules: `common`, `api`, `ingestion`, `workers`. Gradle wrapper (8.11.1). All modules build and tests pass. Merged to main.
-- M1.3 done: Infrastructure scaffolded with Terraform. 11 module stubs (vpc, s3, aurora, opensearch, ecs, alb, step-functions, sqs, ecr, monitoring, iam) each with `variables.tf`, `main.tf`, `outputs.tf`. Two environments (`dev`, `staging`) with S3 backend config, AWS provider with default tags, variables with environment-specific prefixes (`epstein-dev-`, `epstein-staging-`), and commented-out module wiring in `main.tf`. Both environments pass `terraform init` and `terraform validate`.
+- M1.1 done: Frontend scaffolded (React + Vite + TypeScript + TailwindCSS). Layout, stub pages, API client, tests, `amplify.yml`.
+- M1.2 done: Backend scaffolded (Java 21 + Spring Boot 3.4.1, multi-module Gradle). Modules: `common`, `api`, `ingestion`, `workers`.
+- M1.3 done: Infrastructure scaffolded (Terraform). 11 module stubs, dev + staging environments.
+- M1.4 done: CI via GitHub Actions — 3 workflows: `backend.yml` (Gradle build/test on Java 21), `frontend.yml` (npm lint/test/build on Node 20), `terraform.yml` (init + validate + fmt check for dev/staging matrix). All trigger on push to `develop` and PRs to `main`, path-filtered to their respective directories. Amplify handles frontend deployment via `amplify.yml` on merge to `main`.
 
-Not started:
-- M1.4: CI (GitHub Actions + Amplify)
+**Next: Milestone M2 — Infrastructure (Terraform `apply` creates all resources in dev)**
 
-After M1, proceed to M2–M8 per `docs/project-plan.md`.
-
-Git state: on `develop` branch. M1.1 + M1.2 merged to main.
+Git state: on `develop` branch. All M1 merged to main.
 
 ## Architecture
 
